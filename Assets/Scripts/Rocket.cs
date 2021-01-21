@@ -8,7 +8,10 @@ public class Rocket : MonoBehaviour
     // states 
     Rigidbody rigidBody;
     AudioSource audiosource;
-    float rotationMagnitude = 0.5f;
+
+    // adjustable states
+    [SerializeField] float thrustScale = 100f;
+    [SerializeField] float rotationScale = 100f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,21 +23,29 @@ public class Rocket : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessInput();
+        ThrustInput();
+        RotateInput();
     }
 
     // Process key presses every frame in Update()
-    private void ProcessInput() 
+    private void ThrustInput() 
     {
+        float thrustMagnitude = thrustScale * Time.deltaTime;
         if ( Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) ) {
             print("Thrusting");
-            rigidBody.AddRelativeForce(Vector3.up);
+            rigidBody.AddRelativeForce(thrustScale*Vector3.up);
         } 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) {
             audiosource.Play();
         } else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.W)) {
             audiosource.Stop();
         }
+    }
+    private void RotateInput() 
+    {
+        rigidBody.freezeRotation = true;
+        float rotationMagnitude = rotationScale * Time.deltaTime;
+
         if ( Input.GetKey(KeyCode.A) ) {
             print("Rotate Left");
             // Vector3.forward is the Z axis
