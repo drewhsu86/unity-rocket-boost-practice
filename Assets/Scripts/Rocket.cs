@@ -56,5 +56,18 @@ public class Rocket : MonoBehaviour
             print("Rotate Right");
             transform.Rotate(rotationMagnitude*(-Vector3.forward));
         }
+        rigidBody.freezeRotation = false;
+    }
+
+    // collision
+    void OnCollisionEnter(Collision collision) {
+        switch(collision.gameObject.tag) {
+            case "Friendly":
+                print("Collided Friendly");
+                break;
+            default:
+                print("Collided Dead");
+                break;
+        }
     }
 }
