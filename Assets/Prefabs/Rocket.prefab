@@ -161,6 +161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrustScale: 10
   rotationScale: 250
+  DyingSeconds: 1.5
+  MainEngineAudio: {fileID: 8300000, guid: d41ed1dd176394140a41fbde3d710f48, type: 3}
+  DeathExplosionAudio: {fileID: 8300000, guid: 6c3615c1389fc5e42b688a235183553c, type: 3}
+  SuccessAudio: {fileID: 8300000, guid: 8106e7a3cbd35454f8023cc2ff07aaeb, type: 3}
 --- !u!82 &3191094283087298442
 AudioSource:
   m_ObjectHideFlags: 0
@@ -171,7 +175,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d41ed1dd176394140a41fbde3d710f48, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.25
   m_Pitch: 1
