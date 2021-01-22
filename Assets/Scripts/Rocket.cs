@@ -22,6 +22,10 @@ public class Rocket : MonoBehaviour
     [SerializeField] AudioClip DeathExplosionAudio;
     [SerializeField] AudioClip SuccessAudio;
 
+    [SerializeField] ParticleSystem MainEngineParticle;
+    [SerializeField] ParticleSystem DeathExplosionParticle;
+    [SerializeField] ParticleSystem SuccessParticle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,8 +52,10 @@ public class Rocket : MonoBehaviour
         } 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) {
             audiosource.PlayOneShot(MainEngineAudio);
+            MainEngineParticle.Play();
         } else if (Input.GetKeyUp(KeyCode.Space) || Input.GetKeyUp(KeyCode.W)) {
             audiosource.Stop();
+            MainEngineParticle.Stop();
         }
     }
     private void RotateInput() 
@@ -93,9 +99,11 @@ public class Rocket : MonoBehaviour
         gameState = GameState.Dying;
         rigidBody.constraints = RigidbodyConstraints.None;
         audiosource.Stop();
+        MainEngineParticle.Stop();
         audiosource.PlayOneShot(DeathExplosionAudio, 0.2f);
+        DeathExplosionParticle.Play();
         // invoke runs after a timer
-        Invoke("LoadFirstLevel", DyingSeconds);
+        Invoke("LoadLossLevel", DyingSeconds);
     }
 
     private void CollideLandingpad() {
@@ -104,18 +112,20 @@ public class Rocket : MonoBehaviour
         gameState = GameState.Transcending;
         rigidBody.constraints = RigidbodyConstraints.None;
         audiosource.Stop();
+        MainEngineParticle.Stop();
         audiosource.PlayOneShot(SuccessAudio, 0.7f);
+        SuccessParticle.Play();
         // invoke runs after a timer
         Invoke("LoadNextLevel", DyingSeconds);
     }
 
     
-    private void LoadFirstLevel() {
-        SceneManager.LoadScene(0);
+    private void LoadLossLevel() {
+        SceneManager.LoadScene("Lose");
     }
 
     
     private void LoadNextLevel() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
 }
