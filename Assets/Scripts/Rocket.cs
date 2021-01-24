@@ -26,6 +26,9 @@ public class Rocket : MonoBehaviour
     [SerializeField] ParticleSystem DeathExplosionParticle;
     [SerializeField] ParticleSystem SuccessParticle;
 
+    bool booster_L_landed = false;
+    bool booster_R_landed = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,7 @@ public class Rocket : MonoBehaviour
             ThrustInput();
             RotateInput();
         }
+        
     }
 
     // Process key presses every frame in Update()
@@ -78,6 +82,7 @@ public class Rocket : MonoBehaviour
 
     // collision
     void OnCollisionEnter(Collision collision) {
+        print("Collided using: " + collision.contacts[0].thisCollider.name);
         if (gameState == GameState.Alive) {
             switch(collision.gameObject.tag) {
                 case "Friendly":
@@ -89,6 +94,16 @@ public class Rocket : MonoBehaviour
                 default:
                     CollideDead();
                     break;
+            }
+        }
+        // check landing legs - if they collided with landing pad
+        if (collision.gameObject.tag == "Landingpad") {
+            string rocketPart = collision.contacts[0].thisCollider.name;
+
+            if (rocketPart == "Rocket_boosterL") {
+                booster_L_landed = true;
+            } else if (rocketPart == "Rocket_boosterR") {
+                booster_R_landed = true;
             }
         }
     }
@@ -128,4 +143,10 @@ public class Rocket : MonoBehaviour
     private void LoadNextLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
+
+    public bool IsStuckLanding() {
+        // return true if both legs collided with landingpad
+        return booster_L_landed && booster_R_landed;
+    }
+
 }

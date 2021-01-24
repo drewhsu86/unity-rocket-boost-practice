@@ -12,6 +12,13 @@ public class MenuButtons : MonoBehaviour
 
     public void LoadLevel1() {
         // based on build index, hardcoded
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene("Level 1");
+    }
+
+    private void Update() {
+        // when user presses spacebar, load level 1
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            LoadLevel1();
+        }
     }
 }
